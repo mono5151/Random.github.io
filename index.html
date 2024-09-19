@@ -11,12 +11,12 @@
 	box-sizing: border-box;
 	font-size: 14pt;
 }
-div{
+#d{
 	text-align: center;
 	height: 40px;
 	line-height: 40px;
 }
-iframe{
+#f{
 	width: 100%;
 	height: calc(100% - 40px);
 }
@@ -3426,7 +3426,7 @@ const l = [
 
 const r = l[Math.floor(Math.random() * l.length)];
 const y = `〒${r[0].slice(0, 3)}-${r[0].slice(3)}`;
-document.getElementById('b').innerHTML = `<div>${y}　${r[1]}</div><iframe frameborder=0 src="https://maps.google.co.jp/maps?output=embed&z=14&q=${y}"></iframe>`;
+document.getElementById('b').innerHTML = `<div id="d">${y}　${r[1]}</div><iframe id="f" frameborder=0 src="https://maps.google.co.jp/maps?output=embed&z=14&q=${y}"></iframe>`;
 </script>
 </body>
 </html>
