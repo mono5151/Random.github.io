@@ -20,19 +20,18 @@ button, input{
 <body id="b">
 <button onclick="c()">クリップボードにコピーされているＵＲＬのＰＤＦを開く</button>
 <input type="file" accept=".pdf" onchange="s(this)">
-<script src="https://deno.land/x/embed_pdf@v1.2.0/mod.js" type="module"></script>
 <script>
 async function c(){
-	document.getElementById('b').innerHTML = `<object data="${String(await navigator.clipboard.readText()).replace(/"/g, '')}">Error!!</object>`;
+	document.getElementById('b').innerHTML = `<iframe src="${String(await navigator.clipboard.readText()).replace(/"/g, '')}">`;
 }
 
 function s(e){
 	const r = new FileReader();
 	r.onload = e => {
-		const img_element = document.createElement('embed-pdf');
-		img_element.src = e.target.result;
+		const el = document.createElement('iframe');
+		el.src = e.target.result;
 		document.getElementById('b').innerHTML = '';
-		document.getElementById('b').append(img_element);
+		document.getElementById('b').append(el);
 	};
 	r.readAsDataURL(e.files[0]);
 }
