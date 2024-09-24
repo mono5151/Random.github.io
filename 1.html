@@ -22,7 +22,7 @@ button, input{
 <input type="file" accept=".pdf" onchange="s(this)">
 <script>
 async function c(){
-	document.getElementById('b').innerHTML = `<iframe src="https://docs.google.com/viewer?url=${String(await navigator.clipboard.readText()).replace(/"/g, '')}&embedded=true" frameborder="0"></iframe>`;
+	document.getElementById('b').innerHTML = `<iframe src="https://docs.google.com/viewer?url=${String(await navigator.clipboard.readText()).replace(/"/g, '')}&embedded=true"></iframe>`;
 }
 
 function s(e){
