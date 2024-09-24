@@ -1,0 +1,40 @@
+<!DOCUTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+	<title>ＰＤＦ表示</title>
+<style>
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+}
+button, input{
+	height: 50%;
+}
+</style>
+</head>
+<body id="b">
+<button onclick="c()">クリップボードにコピーされているＵＲＬのＰＤＦを開く</button>
+<input type="file" accept=".pdf" onchange="s(this)">
+<script>
+async function c(){
+	document.getElementById('b').innerHTML = `<object data="${String(await navigator.clipboard.readText()).replace(/"/g, '')}">Error!!</object>`;
+}
+
+function s(e){
+	const r = new FileReader();
+	r.onload = e => {
+		const img_element = document.createElement('object');
+		img_element.data = e.target.result;
+		document.getElementById('b').innerHTML = '';
+		document.getElementById('b').append(img_element);
+	};
+	r.readAsDataURL(e.files[0]);
+}
+</script>
+</body>
+</html>
