@@ -14,7 +14,7 @@
 button, input{
 	font-size: 16pt;
 }
-iframe, embed{
+embed{
 	border: none;
 	height: 100%;
 }
@@ -26,11 +26,11 @@ iframe, embed{
 <script>
 async function c(){
 	try{
-		const t = String(await navigator.clipboard.readText()).replace(/"/g, '');
-		if(t.slice(-4).toLowerCase() === '.pdf'){
-			b.innerHTML = `<iframe frameborder=0 src="${t}"></iframe>`;
+		const u = String(await navigator.clipboard.readText()).replace(/"/g, '');
+		if(u.slice(-4).toLowerCase() === '.pdf'){
+			b.innerHTML = `<embed src="https://docs.google.com/gview?url=${u}&embedded=true"></embed>`;
 		} else {
-			alert('PDFのURLがコピーされていません。\n' + t);
+			alert('PDFのURLがコピーされていません。\n' + u);
 		}
 	} catch(error) {
 		alert(error);
@@ -39,9 +39,9 @@ async function c(){
 
 async function s(t){
 	const u = URL.createObjectURL(t.files[0]);
-	const i = document.createElement('iframe');
+	const i = document.createElement('embed');
 	i.frameborder = 0;
-	i.src = u;
+	i.src = `https://docs.google.com/gview?url=${u}&embedded=true`;
 	b.innerHTML = '';
 	b.append(i);
 }
