@@ -10,30 +10,43 @@
 	padding: 0;
 	box-sizing: border-box;
 	width: 100%;
-	height: 100%;
 }
 button, input{
-	height: 50%;
+	font-size: 16pt;
+}
+iframe, embed{
+	border: none;
+	height: 100%;
 }
 </style>
 </head>
 <body id="b">
-<button onclick="c()">クリップボードにコピーされているＵＲＬのＰＤＦを開く</button>
+<button onclick="c()" id="bc">PDFのクリップボードURLを開く</button>
 <input type="file" accept=".pdf" onchange="s(this)">
 <script>
 async function c(){
-	document.getElementById('b').innerHTML = `<iframe src="https://docs.google.com/viewer?url=${String(await navigator.clipboard.readText()).replace(/"/g, '')}&embedded=true"></iframe>`;
+	try{
+		const t = String(await navigator.clipboard.readText()).replace(/"/g, '');
+		if(t.slice(-4).toLowerCase() === '.pdf'){
+			window.open(t);
+		} else {
+			alert('PDFのURLがコピーされていません。\n' + t);
+		}
+	} catch(error) {
+		alert(error);
+	}
 }
 
-function s(e){
-	const r = new FileReader();
-	r.onload = e => {
-		const el = document.createElement('iframe');
-		el.src = e.target.result;
-		document.getElementById('b').innerHTML = '';
-		document.getElementById('b').append(el);
-	};
-	r.readAsDataURL(e.files[0]);
+async function s(t){
+	const u = URL.createObjectURL(t.files[0]);
+	const i = document.createElement('div');
+	i.frameborder = 0;
+	i.src = u;
+	const e = document.createElement('embed');
+	e.src = u;
+	i.append(e);
+	b.innerHTML = '';
+	b.append(i);
 }
 </script>
 </body>
