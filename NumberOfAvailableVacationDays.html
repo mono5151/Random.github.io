@@ -38,7 +38,7 @@ th, td{
 <script>
 const getMonthWorkDays = (y, m) => [...Array(new Date(y, m, 0).getDate())].map((_, d) => d + 1).filter(d => ![0, 6].includes(new Date(y, m - 1, d).getDay()) && !l.includes(y * 10000 + m * 100 + d)).length
 const years = [...Array(3)].map((_, i) => (new Date).getFullYear() + i - 1);
-const url = 'http://api.national-holidays.jp/';
+const url = 'https://api.national-holidays.jp/';
 const l = [];
 
 window.onload = async () => {
