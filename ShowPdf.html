@@ -28,7 +28,7 @@ async function c(){
 	try{
 		const t = String(await navigator.clipboard.readText()).replace(/"/g, '');
 		if(t.slice(-4).toLowerCase() === '.pdf'){
-			window.open(t);
+			b.innerHTML = `<iframe frameborder=0 src="${t}"></iframe>`;
 		} else {
 			alert('PDFのURLがコピーされていません。\n' + t);
 		}
@@ -39,12 +39,9 @@ async function c(){
 
 async function s(t){
 	const u = URL.createObjectURL(t.files[0]);
-	const i = document.createElement('div');
+	const i = document.createElement('iframe');
 	i.frameborder = 0;
 	i.src = u;
-	const e = document.createElement('embed');
-	e.src = u;
-	i.append(e);
 	b.innerHTML = '';
 	b.append(i);
 }
