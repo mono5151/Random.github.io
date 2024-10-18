@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<style>
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	width: 100%;
+	font-size: 12pt;
+}
+iframe{
+	width: 300px;
+	height: 100%;
+}
+input{
+	padding: 0 4px;
+}
+button{
+	height: 40px;
+}
+body > div{
+	height: 200px;
+	display: flex;
+	font-size: 0;
+	> div{
+		width: calc(100% - 300px);
+		height: 100%;
+		> div{
+			height: 30px;
+			display: flex;
+			font-size: 0;
+			margin: 8px 0;
+			div{
+				width: 90px;
+				padding: 3px;
+			}
+			input, select{
+				width: calc(100% - 90px);
+				height: 100%;
+			}
+		}
+	}
+}
+</style>
+</head>
+<body id="b">
+<div>
+	<div>
+		<div>
+			<div>出発地：</div>
+			<input id="t" onchange="c()" value="現在地">
+		</div>
+		<div>
+			<div>移動方法：</div>
+			<select id="s" onchange="ca()">
+				<option value="r">公共交通機関</option>
+				<option value="d">車</option>
+				<option value="w">徒歩</option>
+				<option value="b">自転車</option>
+			</select>
+		</div>
+		<button onclick="add()">目的地追加</button>
+	</div>
+	<iframe id="m" tabindex=-1></iframe>
+</div>
+<!-- "https://www.google.com/maps?output=embed&saddr=出発地&daddr=目的地" -->
+<!-- "dirflg = d[車] | r[公共交通機関] | w[徒歩] | b[自転車]" -->
+<script>
+let i = 0;
+const $ = e => document.getElementById(e);
+const CDom = e => new DOMParser().parseFromString(e, 'text/html').body.firstElementChild;
+const add = () => (b.append(CDom(`<div id="d${++i}"><div><div><div>目的地：</div><input id="t${i}" onchange="c1(${i})"></div><button onclick="d${i}.remove()">削除</button></div><iframe tabindex=-1 id="m${i}"></iframe></div>`)), $(`t${i}`).focus());
+const c = () => (m.src = `https://www.google.com/maps?output=embed&saddr=${t.value}&daddr=${t.value}&z=14`, ca());
+const c1 = e => $(`m${e}`).src = `https://www.google.com/maps?output=embed&saddr=${t.value}&daddr=${$(`t${e}`).value}&dirflg=${s.value}`;
+const ca = () => [...b.children].filter(e => e.id && $(`t${e.id.slice(1)}`).value).forEach(e => c1(`${e.id.slice(1)}`));
+
+c();
+add();
+</script>
+</body>
+</html>
