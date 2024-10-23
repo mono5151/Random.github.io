@@ -11,74 +11,70 @@
 	width: 100%;
 	font-size: 12pt;
 }
-iframe{
-	width: 300px;
-	height: 100%;
-}
 input{
-	padding: 0 4px;
+	padding: 4px;
 }
-button{
-	height: 40px;
+iframe{
+	border: none;
 }
-body > div{
+#b{
 	height: 200px;
 	display: flex;
 	font-size: 0;
 	> div{
-		width: calc(100% - 300px);
+		width: calc(100% - 200px);
 		height: 100%;
-		> div{
+		input, select{
 			height: 30px;
-			display: flex;
-			font-size: 0;
-			margin: 8px 0;
-			div{
-				width: 90px;
-				padding: 3px;
-			}
-			input, select{
-				width: calc(100% - 90px);
-				height: 100%;
-			}
+			border: 1px gray solid;
+			border-width: 1px 0 0;
 		}
+		textarea{
+			resize: none;
+			height: calc(100% - 60px);
+			padding: 4px;
+			border: 1px gray solid;
+			border-width: 1px 0;
+		}
+	}
+	> iframe{
+		width: 200px;
+		height: 100%;
+	}
+}
+#l > div{
+	height: 200px;
+	> div{
+		height: 20px;
+	}
+	> iframe{
+		height: calc(100% - 20px);
 	}
 }
 </style>
 </head>
-<body id="b">
-<div>
+<body>
+<div id="b">
 	<div>
-		<div>
-			<div>出発地：</div>
-			<input id="t" onchange="c()" value="現在地">
-		</div>
-		<div>
-			<div>移動方法：</div>
-			<select id="s" onchange="ca()">
-				<option value="r">公共交通機関</option>
-				<option value="d">車</option>
-				<option value="w">徒歩</option>
-				<option value="b">自転車</option>
-			</select>
-		</div>
-		<button onclick="add()">目的地追加</button>
+		<input id="f" onchange="c()" value="現在地">
+		<select id="s" onchange="ad()">
+			<option value="r">公共交通機関</option>
+			<option value="d">車</option>
+			<option value="w">徒歩</option>
+			<option value="b">自転車</option>
+		</select>
+		<textarea id="t" onchange="ad()"></textarea>
 	</div>
 	<iframe id="m" tabindex=-1></iframe>
 </div>
+<div id="l"></div>
 <!-- "https://www.google.com/maps?output=embed&saddr=出発地&daddr=目的地" -->
-<!-- "dirflg = d[車] | r[公共交通機関] | w[徒歩] | b[自転車]" -->
+<!-- "&dirflg = d[車] | r[公共交通機関] | w[徒歩] | b[自転車]" -->
 <script>
-let i = 0;
-const $ = e => document.getElementById(e);
-const CDom = e => new DOMParser().parseFromString(e, 'text/html').body.firstElementChild;
-const add = () => (b.append(CDom(`<div id="d${++i}"><div><div><div>目的地：</div><input id="t${i}" onchange="c1(${i})"></div><button onclick="d${i}.remove()">削除</button></div><iframe tabindex=-1 id="m${i}"></iframe></div>`)), $(`t${i}`).focus());
-const c = () => (m.src = `https://www.google.com/maps?output=embed&saddr=${t.value}&daddr=${t.value}&z=14`, ca());
-const c1 = e => $(`m${e}`).src = `https://www.google.com/maps?output=embed&saddr=${t.value}&daddr=${$(`t${e}`).value}&dirflg=${s.value}`;
-const ca = () => [...b.children].filter(e => e.id && $(`t${e.id.slice(1)}`).value).forEach(e => c1(`${e.id.slice(1)}`));
-
+const c = () => m.src = `https://www.google.com/maps?output=embed&saddr=${f.value}&daddr=${f.value}`;
+const ad = () => l.innerHTML = t.value.split('\n').filter(e => e.length).map(e => `<div><div> ⇒ ${e}</div><iframe tabindex=-1 src="https://www.google.com/maps?output=embed&saddr=${f.value}&daddr=${e}&dirflg=${s.value}"></iframe></div>`).join('');
 c();
-add();
+t.focus();
 </script>
 </body>
 </html>
